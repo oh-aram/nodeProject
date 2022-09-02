@@ -1,0 +1,23 @@
+{
+  "name": "nodeproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"hello world\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oh-aram/nodeProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oh-aram/nodeProject/issues"
+  },
+  "homepage": "https://github.com/oh-aram/nodeProject#readme",
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
