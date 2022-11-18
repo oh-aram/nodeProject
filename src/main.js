@@ -1,5 +1,3 @@
-// @ts-check
-
 //프레임워크 없ㅣ 간단한 프로젝트 웹 서버 제작
 
 /**
@@ -41,25 +39,49 @@ const server = http.createServer((req, res) => {
     const postIdRegexResult = (req.url && POSTS_ID_REGEX.exec(req.url)) || undefined;
 
     if (req.url === "/posts" && req.method === "GET") {
-
         const result = {
-            posts: {
-                posts.map((post) => ({
-                    id: post.id,
-                    title: post.title,
-                }));
-            }
+            posts: posts.map((post) => ({
+                id: post.id,
+                title: post.title,
+            })),
+
             totalCount: posts.length,
-        }
+        };
         res.statusCode = 200;
+        res.setHeader("content-Type", "application.json", "encoding=utf-8");
         res.end(JSON.stringify(result));
-    } else if (postIdRegexResult) {
+    } else if (postIdRegexResult && req.method === "GET") {
         // GET // posts/:id
         const postId = postIdRegexResult[1];
-        console.log(`postid: ${postId}`);
+        const post = posts.find((_post) => _post.id === postId);
+
+        if (post) {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json; charset=utf-8");
+            res.end(JSON.stringify(post));
+        } else {
+            res.statusCode = 404;
+            res.end("Reading post");
+        }
         res.statusCode = 200;
         res.end("Some content if the post");
     } else if (req.url === "/posts" && req.method === "POST") {
+        req.on("data", (data) => {
+            /**
+             * @typedef CreatePostBody
+             * @property {sting} title
+             * @property {string} content
+             */
+            /** @type {CreatePostBody} */
+            const body = JSON.parse(data);
+            console.log(data);
+            posts.push({
+                id: body.title.toLowerCase().replace(/\s/g, ""),
+                title: body.title,
+                content: body.content,
+            });
+        });
+
         res.statusCode = 200;
         res.end("Creating post");
     } else {
